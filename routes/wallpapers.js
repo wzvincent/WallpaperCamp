@@ -10,14 +10,30 @@ router.get("/new", middleware.isLoggedIn, function(req, res){
 
 // INDEX - show all wallpapers
 router.get("/", function(req, res){
-    // Get all wallpapers from db
-    Wallpaper.find({}, function(err,allWallpapers){
-       if(err){
-           console.log(err);
-       } else{
-           res.render("wallpapers/index", {wallpapers:allWallpapers, currentUser: req.user});
-       }
-    });
+    var noMatch = null;
+    if(req.query.search){
+        const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+        Wallpaper.find({name: regex}, function(err,allWallpapers){
+           if(err){
+               console.log(err);
+           } else{
+               
+               if(allWallpapers.length < 1){
+                   noMatch = "No wallpapers match that query, please try again.";
+               }
+               res.render("wallpapers/index", {wallpapers:allWallpapers, currentUser: req.user, noMatch: noMatch});
+           }
+        });            
+    } else {
+        // Get all wallpapers from db
+        Wallpaper.find({}, function(err,allWallpapers){
+           if(err){
+               console.log(err);
+           } else{
+               res.render("wallpapers/index", {wallpapers:allWallpapers, currentUser: req.user, noMatch: noMatch});
+           }
+        });
+    }
 });
 
 //CREATE - create new wallpaper
@@ -83,5 +99,9 @@ router.delete("/:id", middleware.checkWallpaperOwnership, function(req, res){
       }
    }); 
 });
+
+function escapeRegex(text){
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+}
 
 module.exports = router;

@@ -7,13 +7,24 @@
             <h1>Welcome To Wallpapers Station!</h1>
             <p>View our wallpapers and pick some you like</p>
             <p>
-                <a class="btn btn-primary btn-lg" href="/wallpapers/new">Add New Wallpaper</a>
+                
+                <form action="/wallpapers" method="GET" class="form-inline">
+                    <a class="btn btn-primary" href="/wallpapers/new">Add New Wallpaper</a>
+                    <div style="float:right" class="form-group">
+                        <input style="width:220px" type="text" name="search" placeholder="Search Wallpapers you want..." class="form-control">
+                        <input type="submit" value="Search" class="btn btn-primary">
+                    </div>
+                </form>
             </p>
         </div>
     </header>
     
     <div class="row text-center" style="display:flex; flex-wrap: wrap;">
-    
+        <div class="col-md-12">
+            <% if(noMatch !== null){ %>
+                <h3><%= noMatch %></h3>
+            <% } %>
+        </div>
         <% wallpapers.forEach(function(wallpaper){ %>
             <div class="col-md-3 col-sm-6">
                 <div class="thumbnail">

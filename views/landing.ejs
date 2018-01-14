@@ -24,6 +24,15 @@
     <div id="landing-header">
  		<h1>Welcome to Wallpaper Station!</h1>
 		<a href="/wallpapers" class="btn btn-lg btn-success">View All Wallpapers</a>
+		<p>
+                
+                <form action="/wallpapers" method="GET" class="form-inline">
+                    <div class="form-group">
+                        <input style="width:220px" type="text" name="search" placeholder="Search Wallpapers you want..." class="form-control">
+                        <input type="submit" value="Search" class="btn btn-default">
+                    </div>
+                </form>
+            </p>
     </div>
     
     <ul class="slideshow">
